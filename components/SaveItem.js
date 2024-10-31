@@ -27,7 +27,7 @@ export default function SaveItem() {
     <View style={styles.savecontainer}>
       <TextInput
         style={styles.saveform}
-        placeholder="Add new task..."
+        placeholder="Add new item..."
         value={newItem}
         onChangeText={setNewItem}
         onSubmitEditing={save}

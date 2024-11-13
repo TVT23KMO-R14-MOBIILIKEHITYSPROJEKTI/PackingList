@@ -17,9 +17,7 @@ const app = initializeApp(firebaseConfig)
 const firestore = getFirestore(app)
 
 //Firebase autentikaatio ja AsyncStorageen tallennettu kirjautuminen
-const auth = initializeAuth(app, {
-  persistence: getReactNativePersistence(AsyncStorage),
-})
+const auth = getAuth()
 
 
 const PACKINGITEMS = 'packingitems'

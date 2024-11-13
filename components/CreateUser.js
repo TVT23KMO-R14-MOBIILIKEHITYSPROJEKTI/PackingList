@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { createUserWithEmailAndPassword } from '../firebase/config'
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth'
 import { auth } from '../firebase/config'
 
 const createNewUser = async () => {
@@ -16,6 +16,7 @@ const createNewUser = async () => {
         console.log('Trying to create user')
         console.log (typeof(auth), typeof(email), typeof(password))
         createUserWithEmailAndPassword(auth, email, password)
+        await signInWithEmailAndPassword(auth, email, password)
         console.log('User created')
         return true
     } catch (error) {

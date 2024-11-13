@@ -6,7 +6,6 @@ export default StyleSheet.create({
     backgroundColor: '#fff',
     justifyContent: 'flex-start',
     margin: 8,
-    paddingTop: 30,
     alignItems: 'center',
   },
   form: {

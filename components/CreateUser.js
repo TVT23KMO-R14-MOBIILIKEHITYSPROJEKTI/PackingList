@@ -3,21 +3,23 @@ import { createUserWithEmailAndPassword } from 'firebase/auth'
 import { auth } from '../firebase/config'
 
 const createUser = async (setLoadingMessage, retry = 0) => {
-    // jos rekisteröinti epäonnistuu, yritetään uudelleen
+    // jos käyttäjän luominen epäonnistuu, yritetään uudelleen max 3 kertaa
     if (retry > 3) {
         console.error('Too many retries')
         return false
     }
-
+    
     setLoadingMessage('Creating new user, CreateUser.js')
     console.log('Creating new user, CreateUser.js')
+
     const email = `jartauri+projekti_${Math.random().toString(36).substring(2)}@gmail.com` // kaksi ensimmäistä randomia merkkiä ovat aina nolla
-    const password = Math.random().toString(36).substring(2, 12) // kaksi ekaa pois ja 10 merkkiä salasanaksi
+    const password = Math.random().toString(36).substring(2, 12) // kaksi ekaa pois ja 11 merkkiä salasanaksi
+
     console.log('email:', email)
     console.log('password:', password)
+
     await AsyncStorage.setItem('userEmail', email)
     await AsyncStorage.setItem('userPassword', password)
-    console.log('täällä ollaan')
 
     try {
         console.log('Trying to create user')

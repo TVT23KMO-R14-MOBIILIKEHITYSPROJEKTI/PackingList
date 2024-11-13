@@ -2,7 +2,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth'
 import { auth } from '../firebase/config'
 
-const createNewUser = async () => {
+const createUser = async ({setLoadingMessage}, retry = 0) => {
+    // jos rekisteröinti epäonnistuu, yritetään uudelleen
+    if (retry > 3) {
+        console.error('Too many retries')
+        return false
+    }
     console.log('Creating new user')
     const email = `jartauri+projekti_${Math.random().toString(36).substring(2)}@gmail.com` // kaksi ensimmäistä randomia merkkiä ovat aina nolla
     const password = Math.random().toString(36).substring(2, 12) // kaksi ekaa pois ja 10 merkkiä salasanaksi
@@ -14,9 +19,7 @@ const createNewUser = async () => {
 
     try {
         console.log('Trying to create user')
-        console.log (typeof(auth), typeof(email), typeof(password))
         createUserWithEmailAndPassword(auth, email, password)
-        await signInWithEmailAndPassword(auth, email, password)
         console.log('User created')
         return true
     } catch (error) {
@@ -25,11 +28,12 @@ const createNewUser = async () => {
         await AsyncStorage.removeItem('userEmail')
         await AsyncStorage.removeItem('userPassword')
         if (error.code === 'auth/email-already-in-use') {
-            return createNewUser()
+            return createUser(retry + 1)
         }
         console.error('Error creating user:', error)
+        setLoadingMessage('Error creating user')
         return false
     }
 }
 
-export default createNewUser
+export default createUser
